@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Low Floor · High Ceiling — Math Resources for Teachers</title>
+<meta name="description" content="Math routines, tasks, games and supports for K–8 teachers, organized by what you want students to do.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📐</text></svg>">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to resources</a>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="hero__eyebrow">Math Resources for Teachers</p>
+    <h1 class="hero__title">Low Floor <span aria-hidden="true">·</span> High Ceiling</h1>
+    <p class="hero__sub">Rich tasks. Flexible thinking. Every learner.</p>
+    <p class="hero__lede">Everything here is sorted by <strong>what you want students to do</strong> &mdash; not by who made it. Pick a purpose, pick a card, go teach.</p>
+    <nav class="jumpnav" id="jumpnav" aria-label="Jump to a category"></nav>
+  </div>
+</header>
+
+<div class="controls" id="controls">
+  <div class="wrap controls__inner">
+
+    <div class="controls__row controls__row--primary">
+      <div class="search">
+        <label class="search__label" for="search">Search resources</label>
+        <input type="search" id="search" class="search__input" placeholder="Try “splat”, “estimation”, “fluency”…" autocomplete="off">
+      </div>
+
+      <div class="filtergroup" role="group" aria-label="Filter by grade band">
+        <span class="filtergroup__label">Grade band</span>
+        <div class="chips" id="grade-chips"></div>
+      </div>
+
+      <button type="button" class="btn-clear" id="clear" hidden>Clear filters</button>
+    </div>
+
+    <details class="smp" id="smp-details">
+      <summary class="smp__summary">
+        <span class="smp__summary-text">Filter by Mathematical Practice</span>
+        <span class="smp__count" id="smp-count" hidden></span>
+      </summary>
+      <div class="smp__body">
+        <p class="smp__intro">The 8 Standards for Mathematical Practice. Choose one to see every resource that builds it.</p>
+        <div class="chips chips--smp" id="smp-chips" role="group" aria-label="Filter by Standard for Mathematical Practice"></div>
+      </div>
+    </details>
+
+    <p class="resultcount" id="resultcount" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+<main id="main">
+  <div class="wrap">
+    <div id="sections"></div>
+
+    <p class="noresults" id="noresults" hidden>
+      Nothing matches those filters yet.
+      <button type="button" class="linkbtn" id="noresults-clear">Clear them and start over</button>
+    </p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p class="footer__status" id="datastatus"></p>
+    <p class="footer__credit">Compiled by Alex Striler. Built for teachers, kept current by teachers.</p>
+    <p class="footer__note">Spot something missing or a link that should change? Tell Alex, Tammy, or Cathy.</p>
+  </div>
+</footer>
+
+<script src="data/fallback.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

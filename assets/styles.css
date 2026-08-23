@@ -493,6 +493,36 @@ a.card:hover::before { opacity: 1; }
   color: var(--orange); cursor: pointer; text-decoration: underline;
 }
 
+/* ---------- Back-up button -------------------------------------------------
+   The page is long, and on a phone a jump you can't reverse is a trap. This
+   appears the moment the directory scrolls out of reach.
+   -------------------------------------------------------------------------- */
+
+.backup {
+  position: fixed;
+  right: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 18px;
+  border: 0; border-radius: 999px;
+  background: var(--navy);
+  color: #fff;
+  font: inherit; font-size: .875rem; font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(10,20,40,.24), 0 12px 28px rgba(10,20,40,.28);
+  transition: transform .14s ease, background .14s ease;
+}
+.backup:hover { background: var(--teal); transform: translateY(-2px); }
+.backup[hidden] { display: none; }
+
+.backup__arrow { font-size: 1rem; line-height: 1; }
+
+@media (prefers-color-scheme: dark) {
+  .backup { background: var(--teal); color: #06222A; }
+  .backup:hover { background: #14A8BD; }
+}
+
 /* ---------- Footer -------------------------------------------------------- */
 
 .footer {
@@ -519,6 +549,17 @@ a.card:hover::before { opacity: 1; }
   .grid { grid-template-columns: 1fr; gap: 10px; }
   .section { margin-bottom: 40px; }
   .card { padding: 14px 15px 12px; gap: 8px; }
+  /* Room so the fixed button never sits on top of the last of the footer. */
+  .footer { padding-bottom: 110px; }
+
+  .backup {
+    left: 16px; right: 16px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    justify-content: center;
+    padding: 15px 18px;
+    font-size: .95rem;
+  }
+
   .directory { padding: 32px 0 38px; }
   .directory__grid { grid-template-columns: 1fr; gap: 16px; }
   .panel { padding: 18px 14px 14px; }

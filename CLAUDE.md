@@ -49,6 +49,13 @@ that it still works in five years without anyone running `npm install`.
 - **Empty categories collapse to a small line when filtering** rather than
   disappearing, so the six-part mental map stays stable while teachers filter.
 - **Filters live in the address bar**, so a filtered view is shareable as a link.
+- **Every jump has to be reversible.** Alex hit this on a phone: tapping a row
+  scrolled him deep into a ~12,000px page with no history entry, so the back
+  gesture left the site entirely. Jumps now push a history entry and restore the
+  previous scroll position, there's a fixed "All categories" button once the
+  directory is out of reach, and long jumps are instant rather than a smooth
+  scroll through the whole page. Keep this property for anything new that moves
+  the viewport.
 - Palette (navy / teal / orange) carried over from the original Canva page on
   purpose — teachers should recognize it as the same resource.
 

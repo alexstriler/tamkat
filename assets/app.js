@@ -304,14 +304,30 @@ function makeOption(resource, cat) {
 }
 
 /* Rows without a link yet still do something useful: scroll to the card and
-   flash it, so nobody clicks into a dead end. */
+   flash it, so nobody clicks into a dead end.
+
+   The jump also pushes a history entry, so the phone's back gesture returns you
+   to where you were reading instead of leaving the site. Without this, tapping
+   a row on a phone was a one-way trip. */
+let returnScroll = null;
+
 function revealCard(catKey, title) {
   const section = document.getElementById("cat-" + catKey);
   if (!section) return;
   const card = [...section.querySelectorAll(".card")]
     .find((c) => c.querySelector(".card__title").textContent === title);
+
+  returnScroll = window.scrollY;
+  history.pushState({ tamkatJump: true }, "");
+
+  /* Smooth-scrolling the length of this page is a long, queasy ride on a
+     phone. Animate only short hops; jump the long ones. */
   const target = card || section;
-  target.scrollIntoView({ behavior: "smooth", block: "center" });
+  const distance = Math.abs(target.getBoundingClientRect().top);
+  target.scrollIntoView({
+    behavior: distance > 2000 ? "auto" : "smooth",
+    block: "center"
+  });
   if (card) {
     card.classList.remove("card--flash");
     void card.offsetWidth;           // restart the animation
@@ -512,6 +528,49 @@ function setStatus() {
 
 /* ---------- Go ------------------------------------------------------------ */
 
+/* Everything below is about being able to get back out again — the page is
+   long on a phone, and a jump you can't reverse is a trap. */
+function wireNavigation() {
+  const button = $("#backup");
+  const directory = document.querySelector(".directory");
+
+  const goBackUp = () => {
+    returnScroll = null;
+    const distance = Math.abs(directory.getBoundingClientRect().top);
+    directory.scrollIntoView({
+      behavior: distance > 2000 ? "auto" : "smooth",
+      block: "start"
+    });
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  };
+  button.addEventListener("click", goBackUp);
+
+  /* Show the escape hatch as soon as the directory is behind you. */
+  const onScroll = () => {
+    const past = window.scrollY > directory.offsetTop + directory.offsetHeight - 120;
+    button.hidden = !past;
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  onScroll();
+
+  /* Back gesture after a jump: return to where they were, not off the site. */
+  window.addEventListener("popstate", () => {
+    if (returnScroll === null) return;
+    const y = returnScroll;
+    returnScroll = null;
+    window.scrollTo({
+      top: y,
+      behavior: Math.abs(window.scrollY - y) > 2000 ? "auto" : "smooth"
+    });
+  });
+
+  /* Escape does the same thing on a keyboard. */
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !button.hidden) goBackUp();
+  });
+}
+
 function wireEvents() {
   let timer;
   $("#search").addEventListener("input", (e) => {
@@ -529,6 +588,7 @@ async function init() {
   loadFallback();          // paint something immediately, always
   buildChips();
   wireEvents();
+  wireNavigation();
   readURL();
   render();
   setStatus();

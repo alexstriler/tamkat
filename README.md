@@ -4,7 +4,7 @@ A single page where any K–8 teacher can find math routines, tasks, games, and
 supports, sorted by **what they want students to do** rather than by who
 published it.
 
-**Live page:** _(added once the site is published)_
+**Live page:** <https://alexstriler.github.io/tamkat/>
 **Content Sheet:** [Low Floor High Ceiling — Resource List (edit me)](https://docs.google.com/spreadsheets/d/1stxk5HimPx40nFTl6MG_Uw4oCqtpOxsn9voe_G8mz9Q/edit)
 
 ---

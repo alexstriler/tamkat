@@ -54,7 +54,7 @@ that it still works in five years without anyone running `npm install`.
   private. The page therefore falls back to `data/fallback.js` and says so in the
   footer. It starts reading live the moment the Sheet is set to link-viewable.
 - Shared with Tammy and Cathy: not yet
-- GitHub Pages: not yet published
+- GitHub Pages: live at <https://alexstriler.github.io/tamkat/> (repo `alexstriler/tamkat`, public)
 
 ## Two Google Sheets traps, already worked around
 

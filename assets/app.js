@@ -238,66 +238,69 @@ function el(tag, className, text) {
   return node;
 }
 
-/* The category pills double as hover menus: point at one and you get the
-   whole list of what's inside without scrolling. Each row goes straight to the
-   resource; rows whose link isn't filled in yet jump to the card instead. */
-function buildJumpNav() {
-  const nav = $("#jumpnav");
-  nav.textContent = "";
+/* The directory is the main navigation: every category laid out as a panel
+   with all of its options visible underneath, no hovering required. Each row
+   is a link straight to that resource. */
+function buildDirectory() {
+  const grid = $("#directory");
+  grid.textContent = "";
 
   state.categories.forEach((cat) => {
-    const item = el("div", "catnav__item");
-    item.style.setProperty("--cat", cat.color);
+    const items = state.resources.filter((r) => r.category === cat.key && matches(r));
 
-    const pill = el("a", "catnav__pill");
-    pill.href = "#cat-" + cat.key;
-    pill.setAttribute("aria-expanded", "false");
-    const dot = el("span", "dot");
-    dot.style.setProperty("--dot", cat.color);
-    pill.append(dot, el("span", "catnav__name", cat.title));
+    const panel = el("section", "panel");
+    panel.style.setProperty("--cat", cat.color);
 
-    const items = state.resources.filter((r) => r.category === cat.key);
-    pill.append(el("span", "catnav__badge", String(items.length)));
+    const head = el("a", "panel__head");
+    head.href = "#cat-" + cat.key;
+    head.append(el("h3", "panel__title", cat.title));
+    if (cat.subtitle) head.append(el("p", "panel__sub", cat.subtitle));
+    panel.append(head);
 
-    const pop = el("div", "catnav__pop");
-    pop.append(el("p", "catnav__popsub", cat.subtitle || cat.title));
-
-    const list = el("ul", "catnav__list");
-    items.forEach((r) => {
-      const li = el("li");
-      const row = el(r.url ? "a" : "button", "catnav__row");
-      if (r.url) {
-        row.href = r.url;
-        row.target = "_blank";
-        row.rel = "noopener noreferrer";
-      } else {
-        row.type = "button";
-        row.addEventListener("click", () => revealCard(cat.key, r.title));
-      }
-      row.append(el("span", "catnav__rowicon", r.icon));
-      const text = el("span", "catnav__rowtext");
-      text.append(el("span", "catnav__rowtitle", r.title));
-      if (r.lens) text.append(el("span", "catnav__rowlens", r.lens));
-      row.append(text);
-      if (!r.url) row.append(el("span", "catnav__soon", "soon"));
-      li.append(row);
-      list.append(li);
-    });
+    const list = el("div", "panel__list");
+    items.forEach((r) => list.append(makeOption(r, cat)));
 
     if (!items.length) {
-      list.append(el("li", "catnav__none", "Nothing in this category yet."));
+      list.append(el("p", "panel__empty", isFiltered()
+        ? "Nothing here matches the current filters."
+        : "Nothing in this category yet."));
     }
-    pop.append(list);
-
-    const all = el("a", "catnav__all", "See all of " + cat.title + " →");
-    all.href = "#cat-" + cat.key;
-    pop.append(all);
-
-    item.append(pill, pop);
-    nav.append(item);
+    panel.append(list);
+    grid.append(panel);
   });
+}
 
-  wireTouchMenus();
+/* One row per resource. A row with a link is a real anchor straight to the
+   resource; a row still waiting on its link stays visible but reads as
+   not-ready, and clicking it goes to the card rather than nowhere. */
+function makeOption(resource, cat) {
+  const hasLink = Boolean(resource.url);
+  const row = el(hasLink ? "a" : "button", "option" + (hasLink ? "" : " option--pending"));
+
+  if (hasLink) {
+    row.href = resource.url;
+    row.target = "_blank";
+    row.rel = "noopener noreferrer";
+  } else {
+    row.type = "button";
+    row.title = "Link coming soon \u2014 this opens the card on the page";
+    row.addEventListener("click", () => revealCard(cat.key, resource.title));
+  }
+
+  const text = el("span", "option__text");
+  const name = el("span", "option__name");
+  name.append(document.createTextNode(resource.title), el("span", "option__caret", "\u203a"));
+  text.append(name);
+  if (resource.lens) text.append(el("span", "option__lens", resource.lens));
+  row.append(text);
+
+  if (!hasLink) row.append(el("span", "option__soon", "soon"));
+
+  const badge = el("span", "option__badge", resource.icon);
+  badge.setAttribute("aria-hidden", "true");
+  row.append(badge);
+
+  return row;
 }
 
 /* Rows without a link yet still do something useful: scroll to the card and
@@ -314,28 +317,6 @@ function revealCard(catKey, title) {
     void card.offsetWidth;           // restart the animation
     card.classList.add("card--flash");
   }
-  document.activeElement.blur();
-}
-
-/* Hover menus don't exist on a touchscreen, so there the pill taps open the
-   menu and the "See all" row inside it does the jumping. */
-function wireTouchMenus() {
-  if (!window.matchMedia("(hover: none)").matches) return;
-  document.querySelectorAll(".catnav__pill").forEach((pill) => {
-    pill.addEventListener("click", (e) => {
-      const item = pill.closest(".catnav__item");
-      const open = item.classList.contains("is-open");
-      document.querySelectorAll(".catnav__item.is-open").forEach((n) => {
-        n.classList.remove("is-open");
-        n.querySelector(".catnav__pill").setAttribute("aria-expanded", "false");
-      });
-      if (!open) {
-        e.preventDefault();
-        item.classList.add("is-open");
-        pill.setAttribute("aria-expanded", "true");
-      }
-    });
-  });
 }
 
 function buildChips() {
@@ -465,6 +446,8 @@ function render() {
   smpCount.hidden = state.smps.size === 0;
   smpCount.textContent = state.smps.size + " selected";
 
+  buildDirectory();
+
   document.querySelectorAll("#grade-chips .chip").forEach((chip) => {
     chip.setAttribute("aria-pressed", String(chip.dataset.grade === state.grade));
   });
@@ -537,16 +520,6 @@ function wireEvents() {
     timer = setTimeout(() => { state.query = value; render(); }, 120);
   });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape") return;
-    document.querySelectorAll(".catnav__item.is-open").forEach((n) => {
-      n.classList.remove("is-open");
-      n.querySelector(".catnav__pill").setAttribute("aria-expanded", "false");
-    });
-    if (document.activeElement && document.activeElement.closest(".catnav__item")) {
-      document.activeElement.blur();
-    }
-  });
 
   $("#clear").addEventListener("click", clearFilters);
   $("#noresults-clear").addEventListener("click", clearFilters);
@@ -557,13 +530,11 @@ async function init() {
   buildChips();
   wireEvents();
   readURL();
-  buildJumpNav();
   render();
   setStatus();
 
   try {
     if (await loadSheet()) { // then upgrade to live content if the Sheet answers
-      buildJumpNav();
       render();
       setStatus();
     }

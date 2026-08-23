@@ -79,7 +79,10 @@ Each row in that tab is one section of the page.
 
 ## What teachers can do on the page
 
-- Browse six categories, each with clickable activity cards
+- See every resource at once in the directory — six category panels with all
+  their options listed underneath, each one clickable straight through to the
+  resource
+- Browse the same six categories below as visual activity cards
 - Filter by grade band (K–2 / 3–5 / 6–8)
 - Filter by Standard for Mathematical Practice — "show me everything that builds SMP 3"
 - Search by name or by what students do

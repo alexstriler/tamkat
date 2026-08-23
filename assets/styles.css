@@ -111,129 +111,125 @@ body {
 }
 .hero__lede strong { color: #fff; font-weight: 650; }
 
-.jumpnav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+/* ---------- Directory ------------------------------------------------------
+   The main navigation. Every category is a panel on the dark band, with all of
+   its options listed underneath — nothing hidden behind a hover.
+   -------------------------------------------------------------------------- */
 
-/* Each pill is also a hover menu. z-index has to beat the sticky filter bar
-   (20) so the bubble isn't clipped by it. */
-.catnav__item { position: relative; z-index: 1; }
-.catnav__item:hover,
-.catnav__item:focus-within,
-.catnav__item.is-open { z-index: 50; }
-
-.catnav__pill {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 12px 8px 11px;
-  border: 1px solid rgba(255,255,255,.20);
-  border-radius: 999px;
-  background: rgba(255,255,255,.07);
-  color: #fff; text-decoration: none;
-  font-size: .875rem; font-weight: 600;
-  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+.directory {
+  background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%);
+  padding: 44px 0 52px;
+  color: #fff;
 }
 
-.catnav__item:hover .catnav__pill,
-.catnav__item:focus-within .catnav__pill,
-.catnav__item.is-open .catnav__pill {
-  background: color-mix(in srgb, var(--cat) 60%, transparent);
-  border-color: color-mix(in srgb, var(--cat) 90%, #fff);
-  transform: translateY(-1px);
+.directory__heading {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-weight: 750; letter-spacing: -.02em;
 }
 
-.catnav__pill .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--dot, #fff); flex: none; }
-
-.catnav__badge {
-  font-size: .7rem; font-weight: 800;
-  min-width: 19px; text-align: center;
-  padding: 1px 6px; border-radius: 999px;
-  background: rgba(255,255,255,.18); color: rgba(255,255,255,.92);
+.directory__sub {
+  margin: 8px 0 32px;
+  text-align: center;
+  font-size: .95rem;
+  color: rgba(255,255,255,.66);
 }
 
-/* ---------- The bubble ---------- */
+.directory__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 22px;
+  align-items: start;
+}
 
-.catnav__pop {
-  position: absolute; top: calc(100% + 10px); left: 0;
-  width: min(340px, calc(100vw - 40px));
-  padding: 14px 8px 8px;
+.panel {
   background: var(--surface);
+  border-radius: 16px;
+  padding: 22px 18px 18px;
+  box-shadow: 0 10px 24px rgba(8,16,34,.20);
+  display: flex; flex-direction: column;
+}
+
+.panel__head {
+  display: block; text-align: center; text-decoration: none;
+  color: inherit;
+  padding-bottom: 16px;
+}
+
+.panel__title {
+  margin: 0;
+  font-size: 1.3rem; font-weight: 600; letter-spacing: -.01em;
   color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: 0 10px 20px rgba(10,20,40,.16), 0 24px 60px rgba(10,20,40,.28);
-  opacity: 0; visibility: hidden;
-  transform: translateY(-6px);
-  transition: opacity .14s ease, transform .14s ease, visibility .14s;
-  border-top: 4px solid var(--cat);
 }
+.panel__head:hover .panel__title { color: var(--cat); }
 
-.catnav__item:hover .catnav__pop,
-.catnav__item:focus-within .catnav__pop,
-.catnav__item.is-open .catnav__pop {
-  opacity: 1; visibility: visible; transform: translateY(0);
-}
-
-/* little arrow pointing back at the pill */
-.catnav__pop::before {
-  content: ""; position: absolute; top: -7px; left: 22px;
-  width: 12px; height: 12px;
-  background: var(--cat);
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
-}
-
-.catnav__popsub {
-  margin: 0 8px 8px;
-  font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+.panel__sub {
+  margin: 5px 0 0;
+  font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
   color: var(--cat);
 }
 
-.catnav__list {
-  list-style: none; margin: 0; padding: 0;
-  max-height: min(70vh, 520px); overflow-y: auto;
+.panel__list { display: flex; flex-direction: column; gap: 8px; }
+
+/* Rows echo the dashboard pattern: full-width tinted bar, name on the left,
+   round icon badge on the right. */
+.option {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
+  padding: 11px 12px 11px 15px;
+  border: 0; border-radius: 10px;
+  background: color-mix(in srgb, var(--cat) 11%, var(--surface));
+  font: inherit; text-align: left; text-decoration: none;
+  color: inherit; cursor: pointer;
+  transition: background .14s ease, transform .14s ease;
+}
+.option:hover {
+  background: color-mix(in srgb, var(--cat) 18%, var(--surface));
+  transform: translateX(2px);
 }
 
-.catnav__row {
-  display: flex; align-items: center; gap: 10px; width: 100%;
-  padding: 7px 8px;
-  border: 0; border-radius: var(--radius-sm);
-  background: none; text-align: left;
-  font: inherit; color: inherit; text-decoration: none;
-  cursor: pointer;
-}
-.catnav__row:hover { background: color-mix(in srgb, var(--cat) 11%, var(--surface)); }
+.option__text { display: flex; flex-direction: column; min-width: 0; flex: 1; gap: 1px; }
 
-.catnav__rowicon { font-size: 1.05rem; flex: none; width: 22px; text-align: center; }
-.catnav__rowtext { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.catnav__rowtitle { font-size: .875rem; font-weight: 650; line-height: 1.25; }
-.catnav__rowlens {
-  font-size: .74rem; font-style: italic;
+.option__name {
+  font-size: .93rem; font-weight: 700; line-height: 1.25;
+  color: var(--cat);
+}
+.option__caret { margin-left: 5px; font-weight: 700; }
+
+.option__lens {
+  font-size: .73rem; font-style: italic; line-height: 1.35;
   color: var(--ink-faint);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
-.catnav__soon {
+.option__badge {
   flex: none;
-  font-size: .62rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  font-size: 1.05rem; line-height: 1;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--cat) 15%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--cat) 30%, transparent);
+}
+
+/* Waiting on a link — still listed and still clickable, just visibly not
+   finished yet. Every row looks like this until the URLs land in the Sheet. */
+.option--pending { background: color-mix(in srgb, var(--cat) 5%, var(--surface)); }
+.option--pending .option__name { color: var(--ink-soft); }
+.option--pending .option__caret { opacity: .45; }
+.option--pending .option__badge { filter: grayscale(.35); opacity: .82; }
+
+.option__soon {
+  flex: none;
+  font-size: .6rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
   color: var(--ink-faint);
-  border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px;
+  border: 1px solid var(--line); border-radius: 4px;
+  padding: 2px 5px;
 }
 
-.catnav__none { padding: 8px; font-size: .84rem; color: var(--ink-faint); }
-
-.catnav__all {
-  display: block; margin-top: 6px; padding: 9px 8px 6px;
-  border-top: 1px solid var(--line-soft);
-  font-size: .78rem; font-weight: 700;
-  color: var(--cat); text-decoration: none;
-}
-.catnav__all:hover { text-decoration: underline; }
-
-/* Landing on a card from the bubble — a brief pulse so you spot it. */
-@keyframes cardflash {
-  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--cat) 70%, transparent); }
-  100% { box-shadow: 0 0 0 14px transparent; }
-}
-.card--flash {
-  animation: cardflash 1.1s ease-out 2;
-  border-color: var(--cat);
+.panel__empty {
+  margin: 0; padding: 10px 4px;
+  font-size: .84rem; font-style: italic; color: var(--ink-faint);
 }
 
 /* ---------- Controls ------------------------------------------------------ */
@@ -471,6 +467,16 @@ a.card:hover::before { opacity: 1; }
 .section--empty .section__blurb { display: none; }
 .section--empty .section__title { font-size: 1.15rem; }
 
+/* Landing on a card from the directory — a brief pulse so you spot it. */
+@keyframes cardflash {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--cat) 70%, transparent); }
+  100% { box-shadow: 0 0 0 14px transparent; }
+}
+.card--flash {
+  animation: cardflash 1.1s ease-out 2;
+  border-color: var(--cat);
+}
+
 .section__empty {
   margin: 0;
   font-size: .84rem; font-style: italic; color: var(--ink-faint);
@@ -513,19 +519,16 @@ a.card:hover::before { opacity: 1; }
   .grid { grid-template-columns: 1fr; gap: 10px; }
   .section { margin-bottom: 40px; }
   .card { padding: 14px 15px 12px; gap: 8px; }
-  /* On phones the bubble anchors to the whole pill group instead of one pill,
-     so it can't overflow the right edge of the screen. */
-  .jumpnav { position: relative; }
-  .catnav__item { position: static; }
-  .catnav__pop { left: 0; right: 0; width: auto; }
-  .catnav__pop::before { display: none; }
+  .directory { padding: 32px 0 38px; }
+  .directory__grid { grid-template-columns: 1fr; gap: 16px; }
+  .panel { padding: 18px 14px 14px; }
   .card__icon { width: 38px; height: 38px; font-size: 1.2rem; border-radius: 9px; }
 }
 
 /* ---------- Print --------------------------------------------------------- */
 
 @media print {
-  .controls, .jumpnav, .skip-link, .noresults, .btn-clear, .catnav__pop { display: none !important; }
+  .controls, .jumpnav, .skip-link, .noresults, .btn-clear, 
   body { background: #fff; color: #000; }
   .hero { background: #fff; color: #000; padding: 0 0 18px; border-bottom: 2px solid #000; }
   .hero__title, .hero__lede strong { color: #000; }

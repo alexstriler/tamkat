@@ -38,8 +38,14 @@ that it still works in five years without anyone running `npm install`.
 
 - **Six categories to start, more later** — categories come from the Sheet, so
   adding a seventh is a Sheet row, not a code change.
-- **Cards without URLs still render**, greyed out as "Link coming soon." Alex is
-  populating links over time, and a visible gap is more useful than a hidden one.
+- **The directory is always visible, never a hover menu.** An earlier version put
+  each category's contents in a pull-down bubble on hover; Alex replaced it with
+  the panel layout (modelled on a Teacher Dashboard screenshot he sent) so every
+  option is on screen without pointing at anything. Don't reintroduce hover-only
+  navigation — it hides content and doesn't exist on a touchscreen.
+- **Resources with no URL yet still render**, tagged "soon" and clicking through
+  to their card. Alex is populating links over time, and a visible gap is more
+  useful than a hidden one.
 - **Empty categories collapse to a small line when filtering** rather than
   disappearing, so the six-part mental map stays stable while teachers filter.
 - **Filters live in the address bar**, so a filtered view is shareable as a link.

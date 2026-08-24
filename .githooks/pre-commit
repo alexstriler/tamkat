@@ -1,0 +1,17 @@
+#!/bin/bash
+# Refuse to commit an empty page or asset. An earlier bad one-liner truncated
+# index.html and embed.html to 0 bytes and shipped a blank site.
+fail=0
+for f in index.html embed.html assets/app.js assets/styles.css data/fallback.js; do
+  [ -f "$f" ] || continue
+  size=$(wc -c < "$f" | tr -d ' ')
+  if [ "$size" -lt 200 ]; then
+    echo "pre-commit: $f is only ${size} bytes — refusing to commit."
+    fail=1
+  fi
+done
+node --check assets/app.js || fail=1
+node -e 'global.window={};require("./data/fallback.js");
+ const d=window.TAMKAT_FALLBACK;
+ if(!d||!d.resources||d.resources.length<10) throw new Error("fallback.js has no resources");' || fail=1
+[ "$fail" = 0 ] || { echo "pre-commit: blocked."; exit 1; }

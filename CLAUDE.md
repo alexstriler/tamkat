@@ -124,6 +124,25 @@ to scroll to. GitHub Pages sends no X-Frame-Options, so framing works.
 
 Keep it in step with index.html when the filter bar or directory markup changes.
 
+## Never write a file with `open(p,'w').write(open(p).read()...)`
+
+This shipped a completely blank site. Python evaluates `open(p,'w')` first, which
+truncates the file to zero bytes, and only then evaluates `open(p).read()` — which
+now reads nothing. `index.html` and `embed.html` went to 0 bytes and were pushed
+live; the Google Site went blank too, because it embeds `embed.html`.
+
+Always read into a variable first, then open for writing:
+
+```python
+with open(p) as f: s = f.read()
+assert s.strip()
+with open(p, 'w') as f: f.write(s.replace(...))
+```
+
+`.githooks/pre-commit` (enabled via `core.hooksPath`) now blocks any commit where
+a deliverable falls under 200 bytes, `assets/app.js` fails `node --check`, or
+`data/fallback.js` yields no resources.
+
 ## Deploys look stale for ten minutes unless you bump the version
 
 GitHub Pages serves assets with `Cache-Control: max-age=600`, so a returning

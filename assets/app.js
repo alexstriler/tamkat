@@ -30,6 +30,10 @@ const SMPS = [
   { n: 8, short: "Repeated reasoning" }
 ];
 
+/* Embedded in someone else's page: no hero, no card sections, so a row that
+   has no link yet has nothing to scroll to and shouldn't pretend to. */
+const EMBED = document.body.classList.contains("is-embed");
+
 const state = {
   categories: [],
   resources: [],
@@ -324,13 +328,14 @@ function buildDirectory() {
    not-ready, and clicking it goes to the card rather than nowhere. */
 function makeOption(resource, cat) {
   const hasLink = Boolean(resource.url);
-  const row = el(hasLink ? "a" : "button", "option" + (hasLink ? "" : " option--pending"));
+  const tag = hasLink ? "a" : (EMBED ? "div" : "button");
+  const row = el(tag, "option" + (hasLink ? "" : " option--pending"));
 
   if (hasLink) {
     row.href = resource.url;
     row.target = "_blank";
     row.rel = "noopener noreferrer";
-  } else {
+  } else if (!EMBED) {
     row.type = "button";
     row.title = "Link coming soon \u2014 this opens the card on the page";
     row.addEventListener("click", () => revealCard(cat.key, resource.title));
@@ -579,6 +584,7 @@ function setStatus() {
 function wireNavigation() {
   const button = $("#backup");
   const directory = document.querySelector(".directory");
+  if (EMBED) { button.remove(); return; }
 
   const goBackUp = () => {
     returnScroll = null;

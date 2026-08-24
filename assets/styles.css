@@ -607,3 +607,18 @@ a.card:hover::before { opacity: 1; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   a.card:hover { transform: none; }
 }
+
+/* ---------- Embedded mode --------------------------------------------------
+   embed.html, for dropping into Google Sites or any other host page. The host
+   supplies the heading, so this trims to just the filters and the directory.
+   -------------------------------------------------------------------------- */
+
+.is-embed .directory { padding: 26px 0 34px; }
+.is-embed .directory__heading { font-size: clamp(1.15rem, 2.6vw, 1.45rem); }
+.is-embed .directory__sub { margin-bottom: 24px; }
+.is-embed .controls { position: static; }
+.is-embed .footer { margin-top: 0; padding: 18px 0 22px; }
+
+/* Nothing to click through to in an embed, so a pending row is plain text. */
+.is-embed .option--pending { cursor: default; }
+.is-embed .option--pending:hover { transform: none; }

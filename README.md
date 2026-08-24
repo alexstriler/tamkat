@@ -150,12 +150,38 @@ site does, so it's obvious what's still outstanding.
 
 ---
 
+## Putting this list into Google Sites
+
+Google Sites has no API for creating pages, so this one is done by hand — but
+it's about two minutes, and the result stays current on its own.
+
+**Embed the live page** (recommended — it keeps search and the filters working,
+and never needs re-pasting):
+
+1. Edit your Google Site, and click **Embed** in the Insert panel
+2. Choose **By URL** and paste:
+   `https://alexstriler.github.io/tamkat/embed.html`
+3. Click **Insert**, then drag the frame as wide and tall as it will go
+
+`embed.html` is a trimmed version of the site built for exactly this: no hero
+and no card sections, since your Google Site supplies its own heading — just the
+search box, the filters, and the six category panels. It ends with a link back
+to the full page.
+
+**Or paste the contents in as text**, if you'd rather it be native Sites
+content: open the Google Doc export (see below), select all, copy, and paste
+into a Sites text box. It becomes ordinary Sites text you can restyle — but it's
+frozen at the moment you paste, and has no search or filtering.
+
+---
+
 ## For whoever maintains the code
 
 Plain HTML, CSS, and JavaScript. No build step, no dependencies, no framework.
 
 ```
 index.html          markup shell
+embed.html          trimmed version for embedding in Google Sites etc.
 assets/styles.css   all styling; light and dark, responsive, print
 assets/app.js       Sheet fetch, filtering, rendering — SHEET_ID lives at the top
 data/fallback.js    baked-in copy of the content, used if the Sheet is unreachable

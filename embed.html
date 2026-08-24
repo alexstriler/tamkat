@@ -3,38 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Many Ways In. No Ceiling. — Math Resources for Teachers</title>
-<meta name="description" content="Rich mathematics every K–8 student can enter and every student can extend. Routines, tasks, games and supports, sorted by what you want students to do.">
+<title>Math Resources — Many Ways In. No Ceiling.</title>
+<meta name="robots" content="noindex">
 <link rel="stylesheet" href="assets/styles.css?v=3">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📐</text></svg>">
 </head>
-<body>
-
-<a class="skip-link" href="#main">Skip to resources</a>
-
-<header class="hero">
-  <div class="wrap">
-    <p class="hero__eyebrow">Math Resources for Teachers</p>
-    <h1 class="hero__title">Many Ways In. <span class="hero__title-break"></span><span class="hero__title-accent">No Ceiling.</span></h1>
-    <p class="hero__sub">Every student can enter. Every student can excel.</p>
-    <p class="hero__lede">Rich mathematics with <strong>multiple entry points</strong> and endless room to extend thinking &mdash; sorted by what you want students to do, not by who made it.</p>
-  </div>
-</header>
+<!-- Trimmed for embedding inside another page (Google Sites, Canvas, a district
+     site). The host page supplies its own heading, so the hero and the card
+     sections are dropped and only the filters and directory remain. -->
+<body class="is-embed">
 
 <div class="controls" id="controls">
   <div class="wrap controls__inner">
-
     <div class="controls__row controls__row--primary">
       <div class="search">
         <label class="search__label" for="search">Search resources</label>
         <input type="search" id="search" class="search__input" placeholder="Try “splat”, “estimation”, “fluency”…" autocomplete="off">
       </div>
-
       <div class="filtergroup" role="group" aria-label="Filter by grade band">
         <span class="filtergroup__label">Grade band</span>
         <div class="chips" id="grade-chips"></div>
       </div>
-
       <button type="button" class="btn-clear" id="clear" hidden>Clear filters</button>
     </div>
 
@@ -61,27 +49,20 @@
   </div>
 </section>
 
-<main id="main">
-  <div class="wrap">
-    <div id="sections"></div>
-
-    <p class="noresults" id="noresults" hidden>
-      Nothing matches those filters yet.
-      <button type="button" class="linkbtn" id="noresults-clear">Clear them and start over</button>
-    </p>
+<main id="main" hidden>
+  <div class="wrap"><div id="sections"></div>
+    <p class="noresults" id="noresults" hidden>Nothing matches those filters yet.
+      <button type="button" class="linkbtn" id="noresults-clear">Clear them and start over</button></p>
   </div>
 </main>
 
-<button type="button" class="backup" id="backup" hidden>
-  <span class="backup__arrow" aria-hidden="true">&uarr;</span>
-  <span>All categories</span>
-</button>
+<button type="button" class="backup" id="backup" hidden><span class="backup__arrow" aria-hidden="true">&uarr;</span><span>All categories</span></button>
 
 <footer class="footer">
   <div class="wrap">
     <p class="footer__status" id="datastatus"></p>
-    <p class="footer__credit">Compiled by Alex Striler. Built for teachers, kept current by teachers.</p>
-    <p class="footer__note">Spot something missing or a link that should change? Tell Alex, Tammy, or Cathy.</p>
+    <p class="footer__credit">Compiled by Alex Striler &middot;
+      <a href="https://alexstriler.github.io/tamkat/" target="_blank" rel="noopener">Open the full page</a></p>
   </div>
 </footer>
 

@@ -98,6 +98,16 @@ that it still works in five years without anyone running `npm install`.
    the gviz CSV with no `gid` or `sheet` parameter at all, which returns the
    first tab whatever it's called. Pinning `gid=0` silently fetches nothing.
 
+## embed.html
+
+A trimmed copy of the page for embedding in another site (Google Sites, a
+district page). Same CSS and JS; `<body class="is-embed">` is what changes the
+behaviour — the hero and card sections are dropped, and a resource with no link
+renders as a plain div rather than a button, because in an embed there's no card
+to scroll to. GitHub Pages sends no X-Frame-Options, so framing works.
+
+Keep it in step with index.html when the filter bar or directory markup changes.
+
 ## Deploys look stale for ten minutes unless you bump the version
 
 GitHub Pages serves assets with `Cache-Control: max-age=600`, so a returning

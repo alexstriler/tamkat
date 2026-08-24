@@ -105,7 +105,7 @@ function parseSMPs(value) {
 
 function normalizeCategory(row, i) {
   return {
-    key: (row.key || row.category || "").trim().toLowerCase(),
+    key: (row.key || "").trim().toLowerCase(),
     title: row.title || row.key || "Untitled",
     subtitle: row.subtitle || "",
     blurb: row.blurb || "",
@@ -210,7 +210,17 @@ async function loadSheet() {
      keep the fallback rather than showing an empty page. */
   if (!resources.length) throw new Error("Sheet returned no usable resource rows");
 
-  const fromSheet = cats.map(normalizeCategory).filter((c) => c.key).sort(byOrder);
+  /* Asking gviz for a tab that doesn't exist returns the FIRST tab's data with
+     a 200 rather than an error — so without this check, a Sheet with no
+     categories tab hands back its resource rows and they get read as
+     categories. A real categories tab has a `key` column; the resources tab
+     doesn't, which is what tells them apart. */
+  const fromSheet = cats
+    .filter((row) => (row.key || "").trim())
+    .map(normalizeCategory)
+    .filter((c) => c.key)
+    .sort(byOrder);
+
   const categories = fromSheet.length ? fromSheet : builtInCategories();
 
   state.categories = withUnlistedCategories(categories, resources);

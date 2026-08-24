@@ -1,4 +1,8 @@
 # Working material, not part of the site
 Use-these-topics.HEIC
 
+# PNG exports of the icons. The site loads the SVGs in icons/; these are kept
+# locally for slides, handouts, and anywhere else that can't take a vector.
+pngs/
+
 .DS_Store

@@ -90,6 +90,18 @@ that it still works in five years without anyone running `npm install`.
    the gviz CSV with no `gid` or `sheet` parameter at all, which returns the
    first tab whatever it's called. Pinning `gid=0` silently fetches nothing.
 
+## Deploys look stale for ten minutes unless you bump the version
+
+GitHub Pages serves assets with `Cache-Control: max-age=600`, so a returning
+visitor runs the previous CSS/JS for up to ten minutes after a push. This burned
+an hour once: a fix was confirmed live on the CDN via curl while the browser
+kept running the cached copy, which looked exactly like the fix not working.
+
+`index.html` therefore loads its assets with a `?v=N` query. **Bump that number
+in all three tags whenever you change `assets/*` or `data/fallback.js`** — it
+changes the cache key, so the new files take effect immediately. If a change
+seems not to have deployed, check this first.
+
 ## Icons
 
 Alex supplied 38 line-art SVGs in `icons/`, one per resource, already drawn in

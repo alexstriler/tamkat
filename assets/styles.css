@@ -304,7 +304,7 @@ body {
   background: var(--navy); border-color: var(--navy); color: #fff;
 }
 @media (prefers-color-scheme: dark) {
-  .chip[aria-pressed="true"] { background: var(--teal); border-color: var(--teal); color: #06222A; }
+  body:not(.is-embed) .chip[aria-pressed="true"] { background: var(--teal); border-color: var(--teal); color: #06222A; }
 }
 
 .chips--smp .chip { padding: 6px 12px; font-size: .82rem; }
@@ -622,3 +622,22 @@ a.card:hover::before { opacity: 1; }
 /* Nothing to click through to in an embed, so a pending row is plain text. */
 .is-embed .option--pending { cursor: default; }
 .is-embed .option--pending:hover { transform: none; }
+
+/* The host page for an embed (Google Sites, a district page) is light, so keep
+   the panel light for every viewer rather than dropping a dark slab into a
+   white page. Redefining the tokens on body beats the :root dark-mode block.
+   The standalone site still follows the viewer's theme. */
+body.is-embed {
+  --bg:          #F4F6F9;
+  --surface:     #FFFFFF;
+  --surface-alt: #FBFCFD;
+  --ink:         #16202F;
+  --ink-soft:    #4A5A70;
+  --ink-faint:   #7A8798;
+  --line:        #DFE5EC;
+  --line-soft:   #EBEFF4;
+  --navy:        #1B2F55;
+  --navy-deep:   #142440;
+  --shadow:      0 1px 2px rgba(20, 36, 64, .06), 0 4px 14px rgba(20, 36, 64, .06);
+  --shadow-lift: 0 4px 8px rgba(20, 36, 64, .09), 0 14px 30px rgba(20, 36, 64, .12);
+}

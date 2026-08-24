@@ -70,7 +70,8 @@ that it still works in five years without anyone running `npm install`.
 - Links: not yet populated — every card currently shows "Link coming soon"
 - Google Sheet: `1stxk5HimPx40nFTl6MG_Uw4oCqtpOxsn9voe_G8mz9Q`, link-viewable.
   The page reads it live and the footer says so.
-- Shared with Tammy and Cathy: not yet — needs their addresses
+- Sheet editors: Tammy (`striler.ta@vcpusd.org`) has Editor. Cathy not yet —
+  address still needed.
 - GitHub Pages: live at <https://alexstriler.github.io/tamkat/> (repo `alexstriler/tamkat`, public)
 
 ## Two Google Sheets traps, already worked around

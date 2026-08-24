@@ -124,6 +124,10 @@ function normalizeResource(row, i) {
     grades: splitList(row.grades),
     smps: parseSMPs(row.smps),
     icon: row.icon || defaultIcon(title),
+    art: row.art || defaultArt(title),
+    /* An emoji only wins when an editor typed one into the Sheet. The built-in
+       rows carry both an emoji and artwork, and there the artwork wins. */
+    iconOverridden: Boolean(row.icon) && !row.art,
     note: row.note || "",
     order: Number(row.order) || (i + 1) * 10,
     status: (row.status || "live").trim().toLowerCase()
@@ -144,13 +148,48 @@ const byOrder = (a, b) => a.order - b.order;
    the icon it has here, which spares editors from hunting for an emoji — and
    spares the Sheet from mangling one on the way in. */
 let iconIndex = null;
-function defaultIcon(title) {
+function iconLookup() {
   if (!iconIndex) {
     iconIndex = new Map(
-      (window.TAMKAT_FALLBACK.resources || []).map((r) => [r.title.toLowerCase(), r.icon])
+      (window.TAMKAT_FALLBACK.resources || []).map((r) => [r.title.toLowerCase(), r])
     );
   }
-  return iconIndex.get(title.toLowerCase()) || "•";
+  return iconIndex;
+}
+
+function defaultIcon(title) {
+  const match = iconLookup().get(title.toLowerCase());
+  return (match && match.icon) || "•";
+}
+
+/* The drawn icon in icons/, matched by title. */
+function defaultArt(title) {
+  const match = iconLookup().get(title.toLowerCase());
+  return (match && match.art) || "";
+}
+
+/* Prefers the drawn icon. Falls back to the emoji if a resource has no artwork,
+   if an editor typed their own emoji into the Sheet, or if the file is ever
+   missing — better a small emoji than an empty square. */
+function makeIcon(resource, className) {
+  if (resource.art && !resource.iconOverridden) {
+    const img = document.createElement("img");
+    img.className = className + " " + className + "--art";
+    img.src = "icons/" + resource.art + ".svg";
+    img.alt = "";
+    img.loading = "lazy";
+    img.width = 64;
+    img.height = 64;
+    img.addEventListener("error", () => {
+      const span = el("span", className, resource.icon);
+      span.setAttribute("aria-hidden", "true");
+      img.replaceWith(span);
+    }, { once: true });
+    return img;
+  }
+  const span = el("span", className, resource.icon);
+  span.setAttribute("aria-hidden", "true");
+  return span;
 }
 
 /* The categories tab is optional. Most of the time the six sections don't
@@ -296,9 +335,7 @@ function makeOption(resource, cat) {
 
   if (!hasLink) row.append(el("span", "option__soon", "soon"));
 
-  const badge = el("span", "option__badge", resource.icon);
-  badge.setAttribute("aria-hidden", "true");
-  row.append(badge);
+  row.append(makeIcon(resource, "option__badge"));
 
   return row;
 }
@@ -390,8 +427,7 @@ function makeCard(resource, cat) {
     card.rel = "noopener noreferrer";
   }
 
-  const icon = el("div", "card__icon", resource.icon);
-  icon.setAttribute("aria-hidden", "true");
+  const icon = makeIcon(resource, "card__icon");
 
   const title = el("h3", "card__title", resource.title);
   const lens = resource.lens ? el("p", "card__lens", resource.lens) : null;

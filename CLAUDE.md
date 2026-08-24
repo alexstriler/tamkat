@@ -77,9 +77,25 @@ that it still works in five years without anyone running `npm install`.
    just pulls digits 1–8 out of whatever it's given.
 2. **The Drive connector mangles 4-byte emoji** on upload (🔍 arrives as `ð`).
    3-byte symbols like ⚫ and ➕ survive. So the Sheet's `icon` column ships empty
-   and the icons live in `data/fallback.js`, matched by title; the column only
-   overrides. Emoji typed directly into Sheets in a browser are fine — it's the
-   upload path that breaks them.
+   and icons live in the code; the column only overrides. Emoji typed directly
+   into Sheets in a browser are fine — it's the upload path that breaks them.
+
+## Icons
+
+Alex supplied 38 line-art SVGs in `icons/`, one per resource, already drawn in
+the six category colours. They replaced the emoji placeholders. `data/fallback.js`
+maps each resource to its file through an `art` slug; the emoji stays as a
+fallback for a missing file or an editor override.
+
+They're referenced as `<img src>`, not inlined — cacheable and cheap. Two
+consequences to remember:
+
+- **No `currentColor` inside the files.** It resolves to black in an `<img>`
+  rather than inheriting the page's colour. Eight of the originals used it for
+  filled dots and had their real colour baked in.
+- **The SVGs carry their own rounded tile**, so `.card__icon--art` and
+  `.option__badge--art` strip the background and border the emoji versions
+  needed. Don't re-add chrome around them.
 
 ## Source material
 

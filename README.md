@@ -27,7 +27,7 @@ Only three columns really matter: `category`, `title`, and `url`.
 | `url` | Full web address, starting with `https://` | Card shows greyed out as "Link coming soon" — useful for staging something you're still gathering |
 | `grades` | `K-2`, `3-5`, `6-8` — any combination, separated by commas | Shows up under every grade filter |
 | `smps` | Practices, written as `SMP 1, SMP 3, SMP 6` | Hidden whenever someone filters by a practice |
-| `icon` | One emoji, only if you want to override the built-in one | Keeps the icon the page already has |
+| `icon` | One emoji, only if you want to override the drawn icon | Keeps the drawn icon the page already has |
 | `note` | Small credit line, e.g. `Steve Wyborney` | Shows the grade bands instead |
 | `order` | A number — lower numbers come first inside the category | Falls to the bottom of its category |
 | `status` | `live` | Treated as hidden — see below |
@@ -70,8 +70,10 @@ Each row in that tab is one section of the page.
   like `1, 3, 6` as a date and silently turns it into `1, 3, 2006`. The `SMP`
   prefix stops that. (The page reads the numbers out of whatever you type, so
   `SMP3` and `SMP 3` both work.)
-- **The icon column can stay empty.** Every resource already has an icon built
-  into the page. Fill the column in only when you want a different one.
+- **The icon column can stay empty.** Each of the original resources has a drawn
+  icon built into the page. Type an emoji in this column only if you want to
+  replace one. A brand-new resource you add has no drawn icon yet, so it shows a
+  plain dot — put an emoji in the column, or ask Alex for a matching icon.
 - **Don't reorder the tabs or rename the header row.** The resource list has to
   stay the first tab, and the page looks for those exact column names.
 
@@ -101,7 +103,15 @@ index.html          markup shell
 assets/styles.css   all styling; light and dark, responsive, print
 assets/app.js       Sheet fetch, filtering, rendering — SHEET_ID lives at the top
 data/fallback.js    baked-in copy of the content, used if the Sheet is unreachable
+icons/              one line-art SVG per resource, named by slug
 ```
+
+Each resource's `art` field in `data/fallback.js` names its file in `icons/`.
+To add an icon for a new resource, drop a 64×64 SVG in `icons/` following the
+same pattern — a rounded tile at 10% fill and 28% stroke of the category colour,
+with 2.6px strokes — and set the resource's `art` to the filename. Don't use
+`currentColor` inside them; the icons load as `<img>`, where it resolves to
+black.
 
 The page reads the Sheet through Google's gviz CSV endpoint:
 

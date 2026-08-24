@@ -2,7 +2,12 @@
 
 ## What this is
 
-A public web page of math resources for K–8 teachers: "Low Floor · High Ceiling."
+A public web page of math resources for K–8 teachers: "Many Ways In. No Ceiling."
+The title is Alex's, and it states the design principle directly — multiple entry
+points, endless room to extend thinking. (It replaced the earlier headline "Low
+Floor · High Ceiling", which named the same idea in jargon a teacher new to the
+phrase wouldn't recognize.)
+
 It replaces an older Canva page that showed the same resources as three
 undifferentiated rows of tiles, two of which carried the identical heading
 "Low Floor/High Ceiling Routines."

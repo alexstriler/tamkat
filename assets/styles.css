@@ -95,7 +95,15 @@ body {
   font-size: clamp(2.1rem, 6vw, 3.9rem);
   font-weight: 800; letter-spacing: -.025em; line-height: 1.03;
 }
-.hero__title span { color: var(--orange); padding: 0 .06em; }
+/* The accent falls on the half about extending thinking, not on decoration. */
+.hero__title-accent { color: var(--orange); }
+
+.hero__title .hero__title-break { display: inline; }
+/* Break between the two sentences once the line gets tight, so it never
+   splits mid-sentence. */
+@media (max-width: 720px) {
+  .hero__title .hero__title-break { display: block; height: 0; }
+}
 
 .hero__sub {
   margin: 10px 0 0;

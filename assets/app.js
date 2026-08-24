@@ -34,6 +34,10 @@ const SMPS = [
    has no link yet has nothing to scroll to and shouldn't pretend to. */
 const EMBED = document.body.classList.contains("is-embed");
 
+/* The duplicate card sections have been removed. A resource with no link has
+   nothing to scroll to, so its row is plain text rather than a button. */
+const HAS_SECTIONS = Boolean(document.getElementById("sections"));
+
 const state = {
   categories: [],
   resources: [],
@@ -328,14 +332,14 @@ function buildDirectory() {
    not-ready, and clicking it goes to the card rather than nowhere. */
 function makeOption(resource, cat) {
   const hasLink = Boolean(resource.url);
-  const tag = hasLink ? "a" : (EMBED ? "div" : "button");
+  const tag = hasLink ? "a" : (HAS_SECTIONS ? "button" : "div");
   const row = el(tag, "option" + (hasLink ? "" : " option--pending"));
 
   if (hasLink) {
     row.href = resource.url;
     row.target = "_blank";
     row.rel = "noopener noreferrer";
-  } else if (!EMBED) {
+  } else if (HAS_SECTIONS) {
     row.type = "button";
     row.title = "Link coming soon \u2014 this opens the card on the page";
     row.addEventListener("click", () => revealCard(cat.key, resource.title));
@@ -387,8 +391,11 @@ function revealCard(catKey, title) {
   }
 }
 
+/* A page can omit the filter bar entirely (embed.html does). Every control is
+   therefore optional, and the directory still renders without them. */
 function buildChips() {
   const grades = $("#grade-chips");
+  if (!grades) return;
   grades.textContent = "";
 
   const allChip = el("button", "chip", "All grades");
@@ -411,6 +418,7 @@ function buildChips() {
   });
 
   const smpBox = $("#smp-chips");
+  if (!smpBox) return;
   smpBox.textContent = "";
   SMPS.forEach((smp) => {
     const chip = el("button", "chip");
@@ -460,7 +468,7 @@ function makeCard(resource, cat) {
 
 function render() {
   const container = $("#sections");
-  container.textContent = "";
+  if (container) container.textContent = "";
 
   const byCat = new Map(state.categories.map((c) => [c.key, []]));
   state.resources.forEach((r) => {
@@ -497,21 +505,26 @@ function render() {
       section.append(el("p", "section__empty", "Nothing here matches right now."));
     }
 
-    container.append(section);
+    if (container) container.append(section);
   });
 
   const total = state.resources.length;
   const count = $("#resultcount");
-  count.textContent = isFiltered()
+  if (count) count.textContent = isFiltered()
     ? shown + " of " + total + " resources match" + describeFilters()
     : total + " resources across " + state.categories.length + " categories";
 
-  $("#noresults").hidden = shown > 0;
-  $("#clear").hidden = !isFiltered();
+  const noresults = $("#noresults");
+  if (noresults) noresults.hidden = shown > 0;
+
+  const clear = $("#clear");
+  if (clear) clear.hidden = !isFiltered();
 
   const smpCount = $("#smp-count");
-  smpCount.hidden = state.smps.size === 0;
-  smpCount.textContent = state.smps.size + " selected";
+  if (smpCount) {
+    smpCount.hidden = state.smps.size === 0;
+    smpCount.textContent = state.smps.size + " selected";
+  }
 
   buildDirectory();
 
@@ -551,15 +564,18 @@ function readURL() {
   (params.get("smp") || "").split(",").map(Number)
     .filter((n) => n >= 1 && n <= 8).forEach((n) => state.smps.add(n));
   state.query = (params.get("q") || "").toLowerCase().trim();
-  if (state.query) $("#search").value = state.query;
-  if (state.smps.size) $("#smp-details").open = true;
+  const search = $("#search");
+  if (state.query && search) search.value = state.query;
+  const details = $("#smp-details");
+  if (state.smps.size && details) details.open = true;
 }
 
 function clearFilters() {
   state.grade = "";
   state.smps.clear();
   state.query = "";
-  $("#search").value = "";
+  const search = $("#search");
+  if (search) search.value = "";
   render();
 }
 
@@ -584,7 +600,7 @@ function setStatus() {
 function wireNavigation() {
   const button = $("#backup");
   const directory = document.querySelector(".directory");
-  if (EMBED) { button.remove(); return; }
+  if (!HAS_SECTIONS) { if (button) button.remove(); return; }
 
   const goBackUp = () => {
     returnScroll = null;
@@ -625,15 +641,20 @@ function wireNavigation() {
 
 function wireEvents() {
   let timer;
-  $("#search").addEventListener("input", (e) => {
-    clearTimeout(timer);
-    const value = e.target.value.toLowerCase().trim();
-    timer = setTimeout(() => { state.query = value; render(); }, 120);
-  });
+  const search = $("#search");
+  if (search) {
+    search.addEventListener("input", (e) => {
+      clearTimeout(timer);
+      const value = e.target.value.toLowerCase().trim();
+      timer = setTimeout(() => { state.query = value; render(); }, 120);
+    });
+  }
 
+  const clear = $("#clear");
+  if (clear) clear.addEventListener("click", clearFilters);
 
-  $("#clear").addEventListener("click", clearFilters);
-  $("#noresults-clear").addEventListener("click", clearFilters);
+  const noresultsClear = $("#noresults-clear");
+  if (noresultsClear) noresultsClear.addEventListener("click", clearFilters);
 }
 
 async function init() {

@@ -43,6 +43,15 @@ that it still works in five years without anyone running `npm install`.
 
 - **Six categories to start, more later** — categories come from the Sheet, so
   adding a seventh is a Sheet row, not a code change.
+- **The directory IS the page.** Every resource used to appear twice — once as a
+  directory row, once as a card in a section below. Alex had it removed: the six
+  panels are the whole page now, which roughly halved its length. `app.js` keys
+  off `HAS_SECTIONS` (presence of `#sections`) rather than assuming, so nothing
+  breaks if the card grid ever comes back.
+- **Every control is optional.** `embed.html` has no filter bar at all — Alex
+  removed it from the Google Site version as clutter. `buildChips`, `wireEvents`,
+  `render` and `wireNavigation` all null-check their elements. If you add a new
+  control, guard it the same way or the embed will throw and render nothing.
 - **The directory is always visible, never a hover menu.** An earlier version put
   each category's contents in a pull-down bubble on hover; Alex replaced it with
   the panel layout (modelled on a Teacher Dashboard screenshot he sent) so every

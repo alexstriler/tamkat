@@ -68,10 +68,9 @@ that it still works in five years without anyone running `npm install`.
 
 - Built: 2026-08-23
 - Links: not yet populated — every card currently shows "Link coming soon"
-- Google Sheet: created, ID `1stxk5HimPx40nFTl6MG_Uw4oCqtpOxsn9voe_G8mz9Q`, still
-  private. The page therefore falls back to `data/fallback.js` and says so in the
-  footer. It starts reading live the moment the Sheet is set to link-viewable.
-- Shared with Tammy and Cathy: not yet
+- Google Sheet: `1stxk5HimPx40nFTl6MG_Uw4oCqtpOxsn9voe_G8mz9Q`, link-viewable.
+  The page reads it live and the footer says so.
+- Shared with Tammy and Cathy: not yet — needs their addresses
 - GitHub Pages: live at <https://alexstriler.github.io/tamkat/> (repo `alexstriler/tamkat`, public)
 
 ## Two Google Sheets traps, already worked around
@@ -85,7 +84,13 @@ that it still works in five years without anyone running `npm install`.
    and icons live in the code; the column only overrides. Emoji typed directly
    into Sheets in a browser are fine — it's the upload path that breaks them.
 
-3. **A CSV-imported Sheet's first tab is not gid 0.** This one is gid
+3. **gviz returns the first tab, with a 200, for a tab that doesn't exist.**
+   Asking for `sheet=categories` when there's no such tab hands back the
+   *resources* rows. They were read as categories, so the page rendered 38
+   categories and 252 cards. A real categories tab has a `key` column and the
+   resources tab doesn't, which is what now tells them apart — see
+   `loadSheet()`. Don't rely on a missing tab producing an error.
+4. **A CSV-imported Sheet's first tab is not gid 0.** This one is gid
    `1069584519` and named "Untitled". Both the page and the exporter now request
    the gviz CSV with no `gid` or `sheet` parameter at all, which returns the
    first tab whatever it's called. Pinning `gid=0` silently fetches nothing.

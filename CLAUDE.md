@@ -98,6 +98,22 @@ that it still works in five years without anyone running `npm install`.
    the gviz CSV with no `gid` or `sheet` parameter at all, which returns the
    first tab whatever it's called. Pinning `gid=0` silently fetches nothing.
 
+## Google Site
+
+A Google Site wraps `embed.html`:
+<https://sites.google.com/view/many-ways-in-no-ceiling>
+
+- Page title "Many Ways In. No Ceiling.", one Embed-by-URL block pointing at
+  `embed.html`, published to **specific people** (Alex owner; Tammy and Kathy
+  as Published Viewers).
+- It renders the live embed, so Sheet edits reach the Google Site too — nothing
+  to re-paste.
+- Google Sites has no API for this; it was built by driving Chrome. If it needs
+  rebuilding, the sequence is: sites.google.com/new -> Blank site -> set names ->
+  Insert -> Embed -> By URL -> Publish (set "Who can view" before publishing).
+- The embed takes ~7 seconds to appear on first load. A blank frame usually
+  means it's still fetching, not that it's broken.
+
 ## embed.html
 
 A trimmed copy of the page for embedding in another site (Google Sites, a

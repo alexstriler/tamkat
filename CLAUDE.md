@@ -85,6 +85,11 @@ that it still works in five years without anyone running `npm install`.
    and icons live in the code; the column only overrides. Emoji typed directly
    into Sheets in a browser are fine — it's the upload path that breaks them.
 
+3. **A CSV-imported Sheet's first tab is not gid 0.** This one is gid
+   `1069584519` and named "Untitled". Both the page and the exporter now request
+   the gviz CSV with no `gid` or `sheet` parameter at all, which returns the
+   first tab whatever it's called. Pinning `gid=0` silently fetches nothing.
+
 ## Icons
 
 Alex supplied 38 line-art SVGs in `icons/`, one per resource, already drawn in

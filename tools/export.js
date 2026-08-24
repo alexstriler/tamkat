@@ -48,7 +48,8 @@ function parseCSV(text) {
 async function loadResources() {
   if (!SHEET_ID) return { rows: local.resources, source: "local copy" };
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
+    // no gid or sheet name: gviz defaults to the first tab, whatever it's called
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
     const res = await fetch(url);
     if (!res.ok) throw new Error("HTTP " + res.status);
     const rows = parseCSV(await res.text());

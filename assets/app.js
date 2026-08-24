@@ -12,9 +12,11 @@
    -------------------------------------------------------------------------- */
 const SHEET_ID = "1stxk5HimPx40nFTl6MG_Uw4oCqtpOxsn9voe_G8mz9Q";
 
-/* Resources come from the first tab by position (gid 0) so renaming it can't
-   break anything. Categories are looked up by tab name and are optional. */
-const TABS = { resources: 0, categories: "categories" };
+/* Resources come from whichever tab is first in the Sheet — no gid, no tab
+   name, so neither renaming nor re-importing can break it. (A CSV import does
+   NOT produce gid 0: this Sheet's first tab is gid 1069584519, named
+   "Untitled".) Categories are looked up by tab name and are optional. */
+const TABS = { resources: null, categories: "categories" };
 const GRADE_BANDS = ["K-2", "3-5", "6-8"];
 
 const SMPS = [
@@ -79,11 +81,9 @@ function rowsToObjects(rows) {
 }
 
 async function fetchTab(tab) {
-  const selector = typeof tab === "number"
-    ? "gid=" + tab
-    : "sheet=" + encodeURIComponent(tab);
+  const selector = tab == null ? "" : "&sheet=" + encodeURIComponent(tab);
   const url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
-              "/gviz/tq?tqx=out:csv&" + selector;
+              "/gviz/tq?tqx=out:csv" + selector;
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error(tabName + ": HTTP " + res.status);
   return rowsToObjects(parseCSV(await res.text()));

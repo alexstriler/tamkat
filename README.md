@@ -171,12 +171,14 @@ black.
 The page reads the Sheet through Google's gviz CSV endpoint:
 
 ```
-https://docs.google.com/spreadsheets/d/SHEET_ID/gviz/tq?tqx=out:csv&gid=0
+https://docs.google.com/spreadsheets/d/SHEET_ID/gviz/tq?tqx=out:csv
 ```
 
-The resource list is addressed by position (`gid=0`, the first tab) rather than
-by name, so renaming the tab or the file can't break the page. The optional
-`categories` tab is looked up by name.
+With no `gid` or `sheet` parameter, gviz returns whichever tab is first, so
+neither renaming the tab nor re-importing the CSV can break the page. Don't be
+tempted to pin it to `gid=0` — a CSV import doesn't produce gid 0. This Sheet's
+first tab is gid `1069584519`, named "Untitled". The optional `categories` tab
+is looked up by name.
 
 That requires the Sheet's link sharing to be set to **anyone with the link can
 view**. No "Publish to web" step is needed.

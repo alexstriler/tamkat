@@ -14,6 +14,9 @@ the mathematics is rich enough that nobody runs out of room to think.
 
 ## For Tammy and Cathy — how to change what's on the page
 
+You both have Editor access to the Sheet. Alex owns it and handles the page
+itself; everything teachers see comes from your edits.
+
 Everything teachers see comes from one Google Sheet. You never touch code.
 Edit the Sheet, refresh the page, and your change is live.
 

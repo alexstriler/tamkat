@@ -142,6 +142,16 @@ It converts to proper headings, bold resource names, italic descriptors, bullet
 lists, and live hyperlinks. From there it's a normal Doc — share it, print it,
 or drop it in a PD packet.
 
+### What still needs URLs
+
+22 of the 38 rows have no link yet. Nine are district resources that only Alex
+has (fluency intervention plan, progress monitoring/GLR, teaching tip videos, IA
+toolkits, intervention planning, targeted fluency activities, and the SMP videos
+and posters). The rest — Mystery Number, Cube Conversions, Seeing Structure,
+Beyond the Dots, Number Jam, Games/Dice/Puzzles, Number Talks, Choral Counting,
+Basic Facts, Quick Sense-Making Routines, Talk Moves — had no page that could be
+confirmed as the right one, so they were left blank rather than guessed at.
+
 ### Re-run after changes
 
 Any time resources or links change in the Sheet, re-run the export and re-paste.

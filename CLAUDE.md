@@ -136,6 +136,25 @@ in all three tags whenever you change `assets/*` or `data/fallback.js`** — it
 changes the cache key, so the new files take effect immediately. If a change
 seems not to have deployed, check this first.
 
+## Filling the url column by browser automation
+
+The Drive connector can't write cells, so URLs went in by driving Sheets. Three
+things that cost time and will again:
+
+- **Grid clicks land on the wrong cell.** The screenshot frame rescales between
+  calls, so coordinates drift. Use **Cmd+J** (name box) then type the reference —
+  that is reliable. Arrow keys work too; the `repeat` option does not.
+- **Blank lines collapse.** Typing a column as one block with empty lines for
+  gaps shifts every later value up a row. Type contiguous runs only, and jump
+  between them with Cmd+J.
+- **Autocomplete completes prefixes.** `https://stevewyborney.com/` became
+  `https://stevewyborney.com/category/leaping-numbers/` because that value was
+  already in the column. Type the value, press **Delete** to drop the suggested
+  suffix, then Enter.
+
+Verify with an **exact** comparison, not a substring one — a substring check
+passed the autocompleted hub URL as correct.
+
 ## Icons
 
 Alex supplied 38 line-art SVGs in `icons/`, one per resource, already drawn in

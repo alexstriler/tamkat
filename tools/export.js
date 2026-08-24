@@ -109,8 +109,9 @@ function canvasHTML(resources) {
     );
 
     items.forEach((r) => {
-      const name = r.url
-        ? `<a href="${esc(r.url)}" target="_blank" rel="noopener"><strong>${esc(r.title)}</strong></a>`
+      const url = (r.url || "").trim();
+      const name = url
+        ? `<a href="${esc(url)}" target="_blank" rel="noopener"><strong>${esc(r.title)}</strong></a>`
         : `<strong>${esc(r.title)}</strong> <span style="color:#7A8798;font-size:.85em;">(link coming soon)</span>`;
       const bits = [];
       if (r.lens) bits.push(`<em style="color:${cat.color};">${esc(r.lens)}</em>`);
@@ -151,8 +152,9 @@ function handoutHTML(resources) {
     parts.push(`<p><b>${esc(cat.subtitle)}</b><br><i>${esc(cat.blurb)}</i></p>`);
     parts.push(`<ul>`);
     items.forEach((r) => {
-      const name = r.url
-        ? `<a href="${esc(r.url)}"><b>${esc(r.title)}</b></a>`
+      const url = (r.url || "").trim();
+      const name = url
+        ? `<a href="${esc(url)}"><b>${esc(r.title)}</b></a>`
         : `<b>${esc(r.title)}</b> (link coming soon)`;
       const tail = [r.lens, grades(r), r.note].filter(Boolean).map(esc).join(" — ");
       parts.push(`<li>${name}${tail ? `<br>${tail}` : ""}</li>`);
@@ -174,7 +176,7 @@ function handoutHTML(resources) {
   fs.writeFileSync(path.join(dir, "canvas.html"), canvasHTML(rows));
   fs.writeFileSync(path.join(dir, "handout.html"), handoutHTML(rows));
 
-  const linked = rows.filter((r) => r.url).length;
+  const linked = rows.filter((r) => (r.url || "").trim()).length;
   console.log(`Read ${rows.length} resources from ${source}.`);
   console.log(`  ${linked} have links, ${rows.length - linked} still say "link coming soon".`);
   console.log(`Wrote exports/canvas.html and exports/handout.html`);
